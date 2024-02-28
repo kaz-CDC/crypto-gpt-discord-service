@@ -1,0 +1,108 @@
+name: STD
+'on':
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+permissions:
+  id-token: write
+  contents: read
+concurrency:
+  group: std-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  discover:
+    outputs:
+      hits: ${{ steps.discovery.outputs.hits }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nixbuild/nix-quick-install-action@master
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: divnix/std-action/discover@main
+        id: discovery
+  build:
+    needs: discover
+    name: ${{ matrix.target.jobName }}
+    runs-on: ubuntu-latest
+    if: fromJSON(needs.discover.outputs.hits).packages.build != '{}'
+    strategy:
+      matrix:
+        target: ${{ fromJSON(needs.discover.outputs.hits).packages.build }}
+    steps:
+      - uses: nixbuild/nix-quick-install-action@master
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: divnix/std-action/run@main
+  images:
+    needs:
+      - discover
+    runs-on: ubuntu-latest
+    outputs:
+      staging: ${{ steps.step1.outputs.staging }}
+      production: ${{ steps.step1.outputs.production }}
+    if: fromJSON(needs.discover.outputs.hits).oci-images.publish != '{}'
+    steps:
+      - env:
+          JSON: ${{ toJSON(fromJSON(needs.discover.outputs.hits).oci-images.publish)
+            }}
+        run: 'staging=$(jq -c -r ''map(select(.name | startswith("staging")))'' <<<
+          "$JSON")
+
+          production=$(jq -c -r ''map(select(.name | startswith("production")))''
+          <<< "$JSON")
+
+          echo "staging=$staging" >> "$GITHUB_OUTPUT"
+
+          echo "production=$production" >> "$GITHUB_OUTPUT"
+
+          '
+        shell: bash
+        id: step1
+  images-staging:
+    needs:
+      - images
+      - build
+    name: ${{ matrix.target.jobName }}
+    runs-on: ubuntu-latest
+    if: 'always() &&
+
+      needs.images.outputs.staging != ''[]''
+
+      '
+    strategy:
+      matrix:
+        target: ${{ fromJSON(needs.images.outputs.staging) }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::331395006893:role/github-actions-crypto-com-crypto-gpt-discord-service
+          aws-region: ap-southeast-1
+      - uses: aws-actions/amazon-ecr-login@v1
+      - uses: nixbuild/nix-quick-install-action@master
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: divnix/std-action/run@main
+  images-production:
+    needs:
+      - images
+      - build
+    runs-on: ubuntu-latest
+    if: 'always() &&
+
+      needs.images.outputs.production != ''[]''
+
+      '
+    strategy:
+      matrix:
+        target: ${{ fromJSON(needs.images.outputs.production) }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::640671260559:role/github-actions-crypto-com-crypto-gpt-discord-service
+          aws-region: ap-southeast-1
+      - uses: aws-actions/amazon-ecr-login@v1
+      - uses: nixbuild/nix-quick-install-action@master
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: divnix/std-action/run@main
