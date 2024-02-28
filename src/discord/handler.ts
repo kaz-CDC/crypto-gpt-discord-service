@@ -41,7 +41,7 @@ export const discord = {
       try {
         const response = await queryCryptoGptModel(message.content);
         logger.info(response);
-        await message.channel.send('hi');
+        await message.channel.send(response);
       } catch (e) {
         console.error('Error sending message:', e);
       }
