@@ -13,7 +13,10 @@
 
     installPhase = ''
       mkdir $out
-      cp -R dist $out/
+      cp -R dist $out
+      cp -R node_modules $out
+      cp package.json $out
+      substituteInPlace $out/package.json --replace '"prestart": "npm run build",' ""
     '';
   };
 }

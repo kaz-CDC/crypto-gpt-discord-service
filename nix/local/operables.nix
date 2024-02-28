@@ -6,7 +6,8 @@ in {
     runtimeInputs = with nixpkgs; [bashInteractive coreutils nodejs];
     package = cell.packages.default;
     runtimeScript = ''
-      node ${package}/dist
+      cd "${package}"
+      exec node dist
     '';
   };
 }
