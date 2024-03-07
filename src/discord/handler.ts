@@ -107,11 +107,10 @@ export const discord = {
       const welcomeChannel = (await member.client.channels.fetch(welcomeChannelId)) as TextChannel;
       const welcomeMessage = `Welcome to Crypto GPT, ${member.user.username}! Here's how to get started with our bot:
     
-          1. To ask a question, simply type \`!ask [your question]\` in the #questions channel.
-          2. To get the latest crypto news, type \`!news\`.
-          3. For the current price of Bitcoin, type \`!price bitcoin\`.
-    
-          Please read the #rules channel to ensure a great experience. Enjoy your time here!`;
+          1. To ask a question, simply type \`[your question]\` in the #crypto-gpt channel.
+          2. To get the latest BlockHeight, type \`Get the latest BlockHeight\`.
+          3. For the current BlockHeight, type \`Get the current BlockHeight\`.
+      `;
 
       await welcomeChannel.send(welcomeMessage);
       logger.info(`Welcome message sent to ${member.user.tag}`);
