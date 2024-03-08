@@ -26,6 +26,6 @@ export const queryCryptoGptModel = async (query: string): Promise<string> => {
     return response.data.message;
   } catch (e) {
     logger.error(`[CryptoGPT/query] - ${e}`);
-    return '';
+    return 'I was unable to run the query due to an internal server error.';
   }
 };
