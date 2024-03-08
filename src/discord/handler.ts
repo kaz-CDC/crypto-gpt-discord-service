@@ -34,7 +34,7 @@ export const discord = {
 
     if (rateLimit !== true) {
       const waitMessage = discordUtils.getTimeUntilNextRequest(userId);
-      await message.channel.send(`@${userName} - ${rateLimit} ${waitMessage}`);
+      await message.channel.send(`<@${userId}> - ${rateLimit} ${waitMessage}`);
       return;
     }
 
@@ -42,7 +42,7 @@ export const discord = {
       try {
         const response = await queryCryptoGptModel(message.content);
         logger.info(response);
-        await message.channel.send(`@${userName} - response`);
+        await message.channel.send(`<@${userId}> - ${response}`);
       } catch (e) {
         console.error('Error sending message:', e);
       }
