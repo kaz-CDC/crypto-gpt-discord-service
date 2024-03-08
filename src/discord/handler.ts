@@ -29,7 +29,6 @@ export const discord = {
     if (message.channel.id !== allowedChannelId) return;
 
     const userId = message.author.id;
-    const userName = message.author.username;
     const rateLimit = discordUtils.rateLimit(userId);
 
     if (rateLimit !== true) {
