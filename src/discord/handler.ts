@@ -29,11 +29,12 @@ export const discord = {
     if (message.channel.id !== allowedChannelId) return;
 
     const userId = message.author.id;
+    const userName = message.author.username;
     const rateLimit = discordUtils.rateLimit(userId);
 
     if (rateLimit !== true) {
       const waitMessage = discordUtils.getTimeUntilNextRequest(userId);
-      await message.channel.send(`${rateLimit} ${waitMessage}`);
+      await message.channel.send(`@${userName} - ${rateLimit} ${waitMessage}`);
       return;
     }
 
@@ -41,7 +42,7 @@ export const discord = {
       try {
         const response = await queryCryptoGptModel(message.content);
         logger.info(response);
-        await message.channel.send(response);
+        await message.channel.send(`@${userName} - response`);
       } catch (e) {
         console.error('Error sending message:', e);
       }
