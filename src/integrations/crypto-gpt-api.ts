@@ -1,11 +1,14 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-import { CRYPTO_GPT_BASE_API } from '#src/helpers/constants.js';
+import { CRYPTO_GPT_BASE_API, CRYPTO_GPT_WRITE_API_KEY } from '#src/helpers/constants.js';
 import { CryptoGptResponse } from '#src/lib/interfaces/cryptoGpt.js';
 import { logger } from '#src/helpers/logger.js';
 
 export const cryptoGptInstance: AxiosInstance = axios.create({
   baseURL: CRYPTO_GPT_BASE_API,
+  headers: {
+    'X-API-Key': CRYPTO_GPT_WRITE_API_KEY,
+  },
 });
 
 /**
