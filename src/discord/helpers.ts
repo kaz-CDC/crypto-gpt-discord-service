@@ -1,4 +1,4 @@
-import { LastRequestTimes } from '#src/lib/interfaces/cryptoGpt.js';
+import { LastRequestTimes } from '../lib/interfaces/cryptoGpt.js';
 
 const lastRequestTimes: LastRequestTimes = {};
 
