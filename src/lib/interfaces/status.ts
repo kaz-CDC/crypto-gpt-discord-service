@@ -26,6 +26,6 @@ export enum HTTP_MESSAGES {
   MESSAGE_OK = 'OK',
 }
 
-export interface VerificationErrorModel {
+export type VerificationErrorModel = {
   [key: string]: string;
 }

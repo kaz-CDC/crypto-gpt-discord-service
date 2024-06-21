@@ -1,8 +1,8 @@
 import { Client, GuildMember, Message, TextChannel } from 'discord.js';
-import { logger } from '#src/helpers/logger.js';
-import { queryCryptoGptModel } from '#src/integrations/crypto-gpt-api.js';
+import { logger } from '../helpers/logger.js';
+import { queryCryptoGptModel } from '../integrations/crypto-gpt-api.js';
 import { discordUtils } from './helpers.js';
-import { DISCORD_BOT_LOGO, DISCORD_CHANNEL_ID } from '#src/helpers/constants.js';
+import { DISCORD_BOT_LOGO, DISCORD_CHANNEL_ID } from '../helpers/constants.js';
 
 /**
  * Discord bot utilities for handling messages and logging.

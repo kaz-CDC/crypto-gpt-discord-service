@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
-import { CRYPTO_GPT_BASE_API, CRYPTO_GPT_WRITE_API_KEY } from '#src/helpers/constants.js';
-import { CryptoGptResponse } from '#src/lib/interfaces/cryptoGpt.js';
-import { logger } from '#src/helpers/logger.js';
+import { CRYPTO_GPT_BASE_API, CRYPTO_GPT_WRITE_API_KEY } from '../helpers/constants.js';
+import { CryptoGptResponse } from '../lib/interfaces/cryptoGpt.js';
+import { logger } from '../helpers/logger.js';
 
 export const cryptoGptInstance: AxiosInstance = axios.create({
   baseURL: CRYPTO_GPT_BASE_API,
@@ -23,7 +23,7 @@ export const cryptoGptInstance: AxiosInstance = axios.create({
  */
 
 export const queryCryptoGptModel = async (query: string): Promise<string> => {
-  const url = '/search';
+  const url = '/v1/search';
   try {
     const response: AxiosResponse<CryptoGptResponse> = await cryptoGptInstance.post<CryptoGptResponse>(url, { query });
     return response.data.message;

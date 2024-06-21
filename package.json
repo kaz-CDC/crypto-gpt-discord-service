@@ -4,12 +4,8 @@
   "license": "MIT",
   "author": "rarcifa",
   "main": "index.js",
-  "type": "module",
-  "imports": {
-    "#src/*": "./dist/*"
-  },
   "scripts": {
-    "lint": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "lint": "eslint . --ext .ts",
     "prebuild": "npm run lint && tsc",
     "build": "tsc",
     "prestart": "npm run build",

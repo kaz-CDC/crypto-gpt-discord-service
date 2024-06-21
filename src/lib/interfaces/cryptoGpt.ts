@@ -1,7 +1,7 @@
-export interface CryptoGptResponse {
+export type CryptoGptResponse = {
   message: string;
 }
 
-export interface LastRequestTimes {
+export type LastRequestTimes = {
   [userId: string]: number;
 }
