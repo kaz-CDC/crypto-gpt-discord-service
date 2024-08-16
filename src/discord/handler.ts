@@ -1,4 +1,4 @@
-import { Client, GuildMember, Message, TextChannel } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import { logger } from '../helpers/logger.js';
 import { queryCryptoGptModel } from '../integrations/crypto-gpt-api.js';
 import { discordUtils } from './helpers.js';
