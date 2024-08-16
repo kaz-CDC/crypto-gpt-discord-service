@@ -1,7 +1,7 @@
 {
   default = inputs.nixpkgs.buildNpmPackage {
     pname = "crypto-gpt-discord-service";
-    version = "1.0.0";
+    version = "1.1.2";
 
     src = inputs.self + /.;
 

@@ -1,4 +1,4 @@
-import { Client, GuildMember, Message, TextChannel } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import { logger } from '../helpers/logger.js';
 import { queryCryptoGptModel } from '../integrations/crypto-gpt-api.js';
 import { discordUtils } from './helpers.js';
@@ -90,32 +90,6 @@ export const discord = {
       logger.info('Bot avatar updated successfully.');
     } catch (e) {
       logger.error('Failed to update bot avatar:', e);
-    }
-  },
-
-  /**
-   * Sends a welcome message to new guild members.
-   *
-   * @async
-   * @param {GuildMember} member - The member who has joined a guild.
-   * @returns {Promise<void>} - A promise that resolves when the welcome message has been sent.
-   */
-  sendWelcomeMessage: async (member: GuildMember): Promise<void> => {
-    const welcomeChannelId = DISCORD_CHANNEL_ID;
-
-    try {
-      const welcomeChannel = (await member.client.channels.fetch(welcomeChannelId)) as TextChannel;
-      const welcomeMessage = `Welcome to Crypto GPT, ${member.user.username}! Here's how to get started with our bot:
-    
-          1. To ask a question, simply type \`[your question]\` in the #crypto-gpt channel.
-          2. To get the latest BlockHeight, type \`Get the latest BlockHeight\`.
-          3. For the current BlockHeight, type \`Get the current BlockHeight\`.
-      `;
-
-      await welcomeChannel.send(welcomeMessage);
-      logger.info(`Welcome message sent to ${member.user.tag}`);
-    } catch (e) {
-      logger.error('Failed to send welcome message:', e);
     }
   },
 };

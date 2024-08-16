@@ -13,6 +13,5 @@ const client = new Client({
 client.on('ready', discord.handleLogs);
 client.on('ready', discord.setBotAvatar);
 client.on('messageCreate', discord.handleMessages);
-client.on('guildMemberAdd', discord.sendWelcomeMessage);
 
 client.login(DISCORD_TOKEN);
