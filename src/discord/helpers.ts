@@ -1,3 +1,4 @@
+import { Client } from 'discord.js';
 import { LastRequestTimes } from '../lib/interfaces/cryptoGpt.js';
 
 const lastRequestTimes: LastRequestTimes = {};
@@ -51,5 +52,17 @@ export const discordUtils = {
     const secondsLeft = Math.max(Math.ceil(timeLeft / 1000), 1);
 
     return `Please wait ${secondsLeft} more second(s) before making another request.`;
+  },
+
+  /**
+   * Schedules sending a welcome message to the specified Discord channel every 24 hours.
+   *
+   * @param {Client} client - The Discord client instance.
+   * @param {Function} sendMessageFunction - The function that sends the welcome message.
+   */
+  scheduleWelcomeMessage: (client: Client, sendMessageFunction: (client: Client) => Promise<void>): void => {
+    setInterval(() => {
+      sendMessageFunction(client);
+    }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
   },
 };
