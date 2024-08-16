@@ -1,6 +1,6 @@
 let
   inherit (inputs.std.lib.ops) mkStandardOCI;
-  tag = "1.2.0";
+  tag = "1.1.2";
 in {
   staging = mkStandardOCI {
     name = "331395006893.dkr.ecr.ap-southeast-1.amazonaws.com/staging-crypto-com-crypto-gpt-discord-service";
