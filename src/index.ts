@@ -1,17 +1,23 @@
-import { Client, GatewayIntentBits } from 'discord.js';
 import { discord } from './discord/handler.js';
-import { DISCORD_TOKEN } from './helpers/constants.js';
+import 'dotenv/config';
 
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds, 
-    GatewayIntentBits.GuildMembers, 
-    GatewayIntentBits.GuildMessages, 
-    GatewayIntentBits.MessageContent],
+
+const token = process.env.DISCORDJS_BOT_TOKEN;
+
+if (!token) {
+  console.error('ERROR: DISCORDJS_BOT_TOKEN not found in .env file');
+  process.exit(1);
+}
+
+// Start the bot
+discord.initialize(token).catch(error => {
+  console.error('Failed to start bot:', error);
+  process.exit(1);
 });
 
-client.on('ready', discord.handleLogs);
-client.on('ready', discord.setBotAvatar);
-client.on('messageCreate', discord.handleMessages);
-
-client.login(DISCORD_TOKEN);
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('\nShutting down bot...');
+  await discord.destroy();
+  process.exit(0);
+});
