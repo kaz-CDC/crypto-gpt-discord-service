@@ -4,7 +4,7 @@ import { logger } from '../helpers/logger.js';
 // Bot configuration (formerly in constants.js)
 export const CONFIG = {
   // Channel for suspicious activity alerts
-  ALERT_CHANNEL_NAME: 'suspicious-messages',
+  ALERT_CHANNEL_ID: '1415155467822563349',
   
   // Keywords that trigger alerts
   KEYWORDS: ['help', 'support', 'helpdesk', 'support ticket'],
@@ -116,12 +116,10 @@ export const discord = {
   sendAlert: async (typing: Typing): Promise<void> => {
     if (!typing.guild) return;
 
-    const alertChannel = typing.guild.channels.cache.find(
-      channel => channel.name === CONFIG.ALERT_CHANNEL_NAME
-    );
+    const alertChannel = typing.guild.channels.cache.get(CONFIG.ALERT_CHANNEL_ID);
 
     if (!alertChannel?.isTextBased()) {
-      logger.warn(`${CONFIG.ALERT_CHANNEL_NAME} channel not found`);
+      logger.warn(`Alert channel ${CONFIG.ALERT_CHANNEL_ID} not found`);
       return;
     }
 
@@ -133,7 +131,7 @@ export const discord = {
       `This user started typing shortly after a help-related message was posted.`
     );
 
-    logger.info(`Alert sent: ${typing.user.tag} in ${typing.channel.name}`);
+    logger.info(`Alert sent: ${typing.user.tag} in ${'name' in typing.channel ? typing.channel.name : typing.channel.id}`);
   },
 
   /**
