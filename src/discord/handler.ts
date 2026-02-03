@@ -37,7 +37,7 @@ export const discord = {
       throw new Error('DISCORDJS_BOT_TOKEN is not defined in environment variables');
     }
 
-    client.once('ready', discord.handleLogs);
+    client.once('clientReady', discord.handleLogs);
     client.on('typingStart', discord.handleTypingStart);
     client.on('messageCreate', discord.handleMessages);
 
@@ -133,7 +133,8 @@ export const discord = {
       `This user started typing shortly after a help-related message was posted.`
     );
 
-    logger.info(`Alert sent: ${typing.user.tag} in ${typing.channel.name}`);
+    const channelName = 'name' in typing.channel ? typing.channel.name : 'unknown';
+    logger.info(`Alert sent: ${typing.user.tag} in ${channelName}`);
   },
 
   /**
